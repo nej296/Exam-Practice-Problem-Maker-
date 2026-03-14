@@ -1,4 +1,4 @@
-# Exam Scheduling and Practice Problems
+# Exam Scheduler and Practice Problems
 
 A study tool for scheduling exams and creating practice problem sets. Organize classes by semester, add exams with dates and locations, build practice sets with multiple question types, attach PDFs per question, and study using flashcards, quiz mode, or timed practice exams.
 

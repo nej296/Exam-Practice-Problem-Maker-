@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import Header from './components/layout/Header';
+import LandingPage from './components/layout/LandingPage';
 import SemesterGrid from './components/scheduler/SemesterGrid';
 import SemesterDetail from './components/scheduler/SemesterDetail';
 import ClassSelector from './components/practice/ClassSelector';
@@ -9,14 +10,15 @@ import SuccessScreen from './components/practice/SuccessScreen';
 import StudyModeSelectPage from './components/study/StudyModeSelectPage';
 import StudySession from './components/study/StudySession';
 
-export default function App() {
+function AppContent() {
+  const location = useLocation();
+  const isLanding = location.pathname === '/';
+
   return (
-    <BrowserRouter>
-      <AppProvider>
-        <div className="min-h-screen bg-white">
-          <Header />
-          <Routes>
-            <Route path="/" element={<Navigate to="/scheduler" replace />} />
+    <div className="min-h-screen bg-white">
+      {!isLanding && <Header />}
+      <Routes>
+            <Route path="/" element={<LandingPage />} />
             <Route path="/scheduler" element={<SemesterGrid />} />
             <Route path="/scheduler/:semesterId" element={<SemesterDetail />} />
             <Route path="/practice" element={<ClassSelector />} />
@@ -25,7 +27,15 @@ export default function App() {
             <Route path="/study/:semesterId/:classId/:setId" element={<StudyModeSelectPage />} />
             <Route path="/study/:semesterId/:classId/:setId/session" element={<StudySession />} />
           </Routes>
-        </div>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppProvider>
+        <AppContent />
       </AppProvider>
     </BrowserRouter>
   );
