@@ -5,8 +5,6 @@ import { useMemo } from 'react';
 import FlashcardMode from './FlashcardMode';
 import QuizMode from './QuizMode';
 import PracticeExamMode from './PracticeExamMode';
-import MatchingGame from './MatchingGame';
-import FillInBlank from './FillInBlank';
 import PageContainer from '../layout/PageContainer';
 import type { StudyMode } from '../../types';
 
@@ -56,10 +54,6 @@ export default function StudySession() {
       return <QuizMode problems={problems} onExit={handleExit} />;
     case 'practice-exam':
       return <PracticeExamMode problems={problems} timeLimit={timeLimit} onExit={handleExit} />;
-    case 'matching':
-      return <MatchingGame problems={problems} onExit={handleExit} />;
-    case 'fill-in-blank':
-      return <FillInBlank problems={problems} onExit={handleExit} />;
     default:
       return <FlashcardMode problems={problems} onExit={handleExit} />;
   }

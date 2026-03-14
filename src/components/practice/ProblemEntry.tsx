@@ -1,4 +1,5 @@
 import { Trash2 } from 'lucide-react';
+import PdfViewerInline from './PdfViewerInline';
 import type { Problem } from '../../types';
 
 interface Props {
@@ -65,6 +66,28 @@ export default function ProblemEntry({ problem, index, onChange, onRemove }: Pro
             className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black resize-none"
             placeholder="Enter your question..."
           />
+          <PdfViewerInline
+            fileName={problem.questionPdfFileName ?? null}
+            pdfData={problem.questionPdfData ?? null}
+            onFileSelect={(file) => {
+              const reader = new FileReader();
+              reader.onload = () =>
+                onChange({
+                  ...problem,
+                  questionPdfFileName: file.name,
+                  questionPdfData: reader.result as string,
+                });
+              reader.readAsDataURL(file);
+            }}
+            onRemove={() =>
+              onChange({
+                ...problem,
+                questionPdfFileName: undefined,
+                questionPdfData: undefined,
+              })
+            }
+            label="Import PDF for this question"
+          />
         </div>
 
         {problem.type === 'open-ended' && (
@@ -77,12 +100,56 @@ export default function ProblemEntry({ problem, index, onChange, onRemove }: Pro
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black resize-none"
               placeholder="Enter the answer..."
             />
+            <PdfViewerInline
+              fileName={problem.answerPdfFileName ?? null}
+              pdfData={problem.answerPdfData ?? null}
+              onFileSelect={(file) => {
+                const reader = new FileReader();
+                reader.onload = () =>
+                  onChange({
+                    ...problem,
+                    answerPdfFileName: file.name,
+                    answerPdfData: reader.result as string,
+                  });
+                reader.readAsDataURL(file);
+              }}
+              onRemove={() =>
+                onChange({
+                  ...problem,
+                  answerPdfFileName: undefined,
+                  answerPdfData: undefined,
+                })
+              }
+              label="Import PDF for the answer"
+            />
           </div>
         )}
 
         {problem.type === 'multiple-choice' && (
           <div className="space-y-2">
             <label className="block text-xs font-medium">Answer Options</label>
+            <PdfViewerInline
+              fileName={problem.answerPdfFileName ?? null}
+              pdfData={problem.answerPdfData ?? null}
+              onFileSelect={(file) => {
+                const reader = new FileReader();
+                reader.onload = () =>
+                  onChange({
+                    ...problem,
+                    answerPdfFileName: file.name,
+                    answerPdfData: reader.result as string,
+                  });
+                reader.readAsDataURL(file);
+              }}
+              onRemove={() =>
+                onChange({
+                  ...problem,
+                  answerPdfFileName: undefined,
+                  answerPdfData: undefined,
+                })
+              }
+              label="Import PDF for the correct answer"
+            />
             {['A', 'B', 'C', 'D'].map((letter, i) => (
               <div key={i} className="flex items-center gap-2">
                 <input
@@ -113,7 +180,29 @@ export default function ProblemEntry({ problem, index, onChange, onRemove }: Pro
         {problem.type === 'true-false' && (
           <div>
             <label className="block text-xs font-medium mb-2">Correct Answer</label>
-            <div className="flex gap-3">
+            <PdfViewerInline
+              fileName={problem.answerPdfFileName ?? null}
+              pdfData={problem.answerPdfData ?? null}
+              onFileSelect={(file) => {
+                const reader = new FileReader();
+                reader.onload = () =>
+                  onChange({
+                    ...problem,
+                    answerPdfFileName: file.name,
+                    answerPdfData: reader.result as string,
+                  });
+                reader.readAsDataURL(file);
+              }}
+              onRemove={() =>
+                onChange({
+                  ...problem,
+                  answerPdfFileName: undefined,
+                  answerPdfData: undefined,
+                })
+              }
+              label="Import PDF for the correct answer"
+            />
+            <div className="flex gap-3 mt-2">
               {['True', 'False'].map((val) => (
                 <button
                   key={val}

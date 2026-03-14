@@ -75,6 +75,11 @@ export default function QuizMode({ problems, onExit }: Props) {
               {missedQuestions.map((r, i) => (
                 <div key={i} className="border border-gray-200 rounded-lg p-4">
                   <p className="font-medium text-sm mb-2">{r.problem.question}</p>
+                  {r.problem.answerPdfData && (
+                    <div className="mb-3 rounded-md overflow-hidden border border-gray-200">
+                      <iframe src={r.problem.answerPdfData} className="w-full h-40 bg-white" title="Answer PDF" />
+                    </div>
+                  )}
                   <p className="text-sm text-gray-500">
                     Your answer: <span className="text-black">{r.userAnswer || '(empty)'}</span>
                   </p>
@@ -135,7 +140,12 @@ export default function QuizMode({ problems, onExit }: Props) {
       </div>
 
       <div className="border border-gray-200 rounded-lg p-6 mb-6 animate-fade-in">
-        <p className="text-lg font-medium mb-6">{current.question}</p>
+        <p className="text-lg font-medium mb-4">{current.question}</p>
+        {current.questionPdfData && (
+          <div className="mb-6 rounded-md overflow-hidden border border-gray-200">
+            <iframe src={current.questionPdfData} className="w-full h-48 bg-white" title="Question PDF" />
+          </div>
+        )}
 
         {current.type === 'open-ended' && (
           <>
@@ -157,6 +167,11 @@ export default function QuizMode({ problems, onExit }: Props) {
               </div>
             ) : (
               <div>
+                {current.answerPdfData && (
+                  <div className="mb-4 rounded-md overflow-hidden border border-gray-200">
+                    <iframe src={current.answerPdfData} className="w-full h-48 bg-white" title="Answer PDF" />
+                  </div>
+                )}
                 <div className="bg-gray-50 rounded-md p-4 mb-4">
                   <p className="text-xs text-gray-500 mb-1">Correct Answer</p>
                   <p className="text-sm font-medium">{current.answer}</p>
@@ -182,6 +197,11 @@ export default function QuizMode({ problems, onExit }: Props) {
 
         {current.type === 'multiple-choice' && current.options && (
           <div className="space-y-2">
+            {current.answerPdfData && (
+              <div className="mb-4 rounded-md overflow-hidden border border-gray-200">
+                <iframe src={current.answerPdfData} className="w-full h-48 bg-white" title="Answer PDF" />
+              </div>
+            )}
             {['A', 'B', 'C', 'D'].map((letter, i) => (
               <button
                 key={i}
@@ -218,6 +238,11 @@ export default function QuizMode({ problems, onExit }: Props) {
 
         {current.type === 'true-false' && (
           <>
+            {current.answerPdfData && (
+              <div className="mb-4 rounded-md overflow-hidden border border-gray-200">
+                <iframe src={current.answerPdfData} className="w-full h-48 bg-white" title="Answer PDF" />
+              </div>
+            )}
             <div className="flex gap-3 mb-4">
               {['True', 'False'].map((val) => (
                 <button

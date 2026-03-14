@@ -4,8 +4,6 @@ import {
   Layers,
   ClipboardCheck,
   Timer,
-  Puzzle,
-  PenTool,
 } from 'lucide-react';
 import type { StudyMode, PracticeSet } from '../../types';
 import PageContainer from '../layout/PageContainer';
@@ -39,18 +37,6 @@ const MODES: {
     name: 'Practice Exam with Timer',
     description: 'Simulate a real exam environment with a countdown timer.',
     icon: Timer,
-  },
-  {
-    id: 'matching',
-    name: 'Matching Game',
-    description: 'Match questions to their correct answers in a click-to-pair game.',
-    icon: Puzzle,
-  },
-  {
-    id: 'fill-in-blank',
-    name: 'Fill-in-the-Blank',
-    description: 'Key terms from your answers are blanked out. Type them back in from memory.',
-    icon: PenTool,
   },
 ];
 

@@ -4,7 +4,6 @@ import { useAppContext } from '../../context/AppContext';
 import { ArrowLeft, Plus } from 'lucide-react';
 import PageContainer from '../layout/PageContainer';
 import ProblemEntry from './ProblemEntry';
-import PdfViewer from './PdfViewer';
 import { generateId } from '../../utils/helpers';
 import type { Problem } from '../../types';
 
@@ -26,8 +25,6 @@ export default function ProblemCreator() {
 
   const [problems, setProblems] = useState<Problem[]>([createEmptyProblem()]);
   const [setName, setSetName] = useState('');
-  const [pdfFileName, setPdfFileName] = useState<string | null>(null);
-  const [pdfData, setPdfData] = useState<string | null>(null);
 
   if (!cls || !semesterId || !classId) {
     return (
@@ -36,13 +33,6 @@ export default function ProblemCreator() {
       </PageContainer>
     );
   }
-
-  const handleFileSelect = (file: File) => {
-    setPdfFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = () => setPdfData(reader.result as string);
-    reader.readAsDataURL(file);
-  };
 
   const updateProblem = (index: number, updated: Problem) => {
     const newProblems = [...problems];
@@ -72,7 +62,6 @@ export default function ProblemCreator() {
       classId,
       set: {
         name: setName.trim(),
-        pdfFileName: pdfFileName || undefined,
         problems: validProblems,
       },
     });
@@ -97,19 +86,6 @@ export default function ProblemCreator() {
 
       <h2 className="text-2xl font-bold mb-1">Create Practice Problems for {cls.name}</h2>
       <p className="text-sm text-gray-500 mb-6">Build a set of practice problems to study.</p>
-
-      {/* PDF Import */}
-      <div className="mb-8">
-        <PdfViewer
-          fileName={pdfFileName}
-          pdfData={pdfData}
-          onFileSelect={handleFileSelect}
-          onRemove={() => {
-            setPdfFileName(null);
-            setPdfData(null);
-          }}
-        />
-      </div>
 
       {/* Problem Builder */}
       <div className="space-y-4 mb-6">

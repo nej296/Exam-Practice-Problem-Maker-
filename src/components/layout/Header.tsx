@@ -14,7 +14,7 @@ export default function Header() {
           className="text-xl font-bold tracking-tight cursor-pointer select-none"
           onClick={() => navigate('/')}
         >
-          ExamForge
+          Exam Scheduling and Practice Problems
         </h1>
         <nav className="flex gap-2">
           <button

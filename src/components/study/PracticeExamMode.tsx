@@ -195,7 +195,12 @@ export default function PracticeExamMode({ problems, timeLimit, onExit }: Props)
       {/* Current question */}
       <div className="border border-gray-200 rounded-lg p-6 animate-fade-in">
         <p className="text-xs text-gray-400 mb-2">Question {activeQ + 1} of {problems.length}</p>
-        <p className="text-lg font-medium mb-6">{problems[activeQ].question}</p>
+        <p className="text-lg font-medium mb-4">{problems[activeQ].question}</p>
+        {problems[activeQ].questionPdfData && (
+          <div className="mb-6 rounded-md overflow-hidden border border-gray-200">
+            <iframe src={problems[activeQ].questionPdfData!} className="w-full h-48 bg-white" title="Question PDF" />
+          </div>
+        )}
 
         {problems[activeQ].type === 'open-ended' && (
           <textarea

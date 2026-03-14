@@ -1,6 +1,6 @@
 import type { AppData } from '../types';
 
-const STORAGE_KEY = 'examforge-data';
+const STORAGE_KEY = 'exam-scheduling-practice-data';
 
 const DEFAULT_SEMESTERS = [
   { id: 'spring-2026', name: 'Spring 2026' },

@@ -36,6 +36,31 @@ export default function FlashcardMode({ problems: initialProblems, onExit }: Pro
   };
 
   const getAnswerDisplay = (p: Problem) => {
+    if (p.answerPdfData) {
+      return (
+        <div>
+          <div className="mb-4 rounded-md overflow-hidden border border-gray-200">
+            <iframe src={p.answerPdfData} className="w-full h-48 bg-white" title="Answer PDF" />
+          </div>
+          {p.type === 'multiple-choice' && p.options ? (
+            <div className="space-y-2">
+              {p.options.map((opt, i) => (
+                <div
+                  key={i}
+                  className={`px-3 py-2 rounded-md text-sm ${
+                    i === p.correctOption ? 'bg-black text-white font-medium' : 'bg-gray-50 text-gray-500'
+                  }`}
+                >
+                  {['A', 'B', 'C', 'D'][i]}. {opt}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-lg">{p.answer}</p>
+          )}
+        </div>
+      );
+    }
     if (p.type === 'multiple-choice' && p.options) {
       const letters = ['A', 'B', 'C', 'D'];
       return (
@@ -62,6 +87,11 @@ export default function FlashcardMode({ problems: initialProblems, onExit }: Pro
     return (
       <div>
         <p className="text-lg mb-4">{p.question}</p>
+        {p.questionPdfData && (
+          <div className="mb-4 rounded-md overflow-hidden border border-gray-200">
+            <iframe src={p.questionPdfData} className="w-full h-48 bg-white" title="Question PDF" />
+          </div>
+        )}
         {p.type === 'multiple-choice' && p.options && (
           <div className="space-y-2 text-left">
             {['A', 'B', 'C', 'D'].map((letter, i) => (

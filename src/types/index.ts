@@ -13,6 +13,10 @@ export interface Problem {
   answer: string;
   options?: string[];
   correctOption?: number;
+  questionPdfFileName?: string;
+  questionPdfData?: string;
+  answerPdfFileName?: string;
+  answerPdfData?: string;
 }
 
 export interface PracticeSet {
@@ -42,7 +46,7 @@ export interface AppData {
   semesters: Record<string, SemesterData>;
 }
 
-export type StudyMode = 'flashcards' | 'quiz' | 'practice-exam' | 'matching' | 'fill-in-blank';
+export type StudyMode = 'flashcards' | 'quiz' | 'practice-exam';
 
 export interface StudyConfig {
   mode: StudyMode;
