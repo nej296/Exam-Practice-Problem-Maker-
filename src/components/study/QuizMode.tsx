@@ -174,7 +174,7 @@ export default function QuizMode({ problems, onExit }: Props) {
                 )}
                 <div className="bg-gray-50 rounded-md p-4 mb-4">
                   <p className="text-xs text-gray-500 mb-1">Correct Answer</p>
-                  <p className="text-sm font-medium">{current.answer}</p>
+                  <p className="text-sm font-medium whitespace-pre-wrap">{current.answer}</p>
                 </div>
                 <div className="flex gap-2">
                   <button

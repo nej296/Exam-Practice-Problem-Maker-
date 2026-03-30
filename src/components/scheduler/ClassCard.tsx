@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
-import { Pencil, Trash2, Calendar, BookOpen } from 'lucide-react';
+import { Pencil, Trash2, Calendar, BookOpen, SquarePen } from 'lucide-react';
 import ExamScheduler from './ExamScheduler';
 import AddClassModal from './AddClassModal';
 import type { ClassData } from '../../types';
@@ -95,6 +95,15 @@ export default function ClassCard({ semesterId, cls }: Props) {
                     >
                       <BookOpen size={12} />
                       Study
+                    </button>
+                    <button
+                      onClick={() =>
+                        navigate(`/practice/${semesterId}/${cls.id}/${set.id}/edit`)
+                      }
+                      className="p-1 rounded hover:bg-gray-200 transition-colors"
+                      title="Edit practice set"
+                    >
+                      <SquarePen size={13} />
                     </button>
                     <button
                       onClick={() => {

@@ -11,6 +11,8 @@ type Action =
   | { type: 'EDIT_EXAM'; semesterId: string; classId: string; examId: string; exam: Omit<Exam, 'id'> }
   | { type: 'DELETE_EXAM'; semesterId: string; classId: string; examId: string }
   | { type: 'ADD_PRACTICE_SET'; semesterId: string; classId: string; set: Omit<PracticeSet, 'id' | 'createdAt'> }
+  | { type: 'UPDATE_PRACTICE_SET'; semesterId: string; classId: string; setId: string; set: Omit<PracticeSet, 'id' | 'createdAt'> }
+  | { type: 'TOGGLE_STAR_PROBLEM'; semesterId: string; classId: string; setId: string; problemId: string }
   | { type: 'DELETE_PRACTICE_SET'; semesterId: string; classId: string; setId: string };
 
 function reducer(state: AppData, action: Action): AppData {
@@ -71,6 +73,25 @@ function reducer(state: AppData, action: Action): AppData {
         createdAt: new Date().toISOString(),
         ...action.set,
       };
+      return newState;
+    }
+    case 'UPDATE_PRACTICE_SET': {
+      const cls = newState.semesters[action.semesterId]?.classes[action.classId];
+      if (!cls || !cls.practiceSets[action.setId]) return state;
+      cls.practiceSets[action.setId] = {
+        ...cls.practiceSets[action.setId],
+        ...action.set,
+      };
+      return newState;
+    }
+    case 'TOGGLE_STAR_PROBLEM': {
+      const cls = newState.semesters[action.semesterId]?.classes[action.classId];
+      if (!cls) return state;
+      const set = cls.practiceSets[action.setId];
+      if (!set) return state;
+      const problem = set.problems.find((p) => p.id === action.problemId);
+      if (!problem) return state;
+      problem.starred = !problem.starred;
       return newState;
     }
     case 'DELETE_PRACTICE_SET': {

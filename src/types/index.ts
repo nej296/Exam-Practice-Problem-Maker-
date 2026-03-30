@@ -13,6 +13,7 @@ export interface Problem {
   answer: string;
   options?: string[];
   correctOption?: number;
+  starred?: boolean;
   questionPdfFileName?: string;
   questionPdfData?: string;
   answerPdfFileName?: string;

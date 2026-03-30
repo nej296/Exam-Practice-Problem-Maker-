@@ -16,7 +16,7 @@ export default function StudySession() {
   }>();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { data } = useAppContext();
+  const { data, dispatch } = useAppContext();
 
   const mode = (searchParams.get('mode') || 'flashcards') as StudyMode;
   const count = Number(searchParams.get('count') || '999');
@@ -47,9 +47,14 @@ export default function StudySession() {
     navigate(`/scheduler/${semesterId}`);
   };
 
+  const handleToggleStar = (problemId: string) => {
+    if (!semesterId || !classId || !setId) return;
+    dispatch({ type: 'TOGGLE_STAR_PROBLEM', semesterId, classId, setId, problemId });
+  };
+
   switch (mode) {
     case 'flashcards':
-      return <FlashcardMode problems={problems} onExit={handleExit} />;
+      return <FlashcardMode problems={problems} onExit={handleExit} onToggleStar={handleToggleStar} />;
     case 'quiz':
       return <QuizMode problems={problems} onExit={handleExit} />;
     case 'practice-exam':

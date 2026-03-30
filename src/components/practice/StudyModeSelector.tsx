@@ -155,6 +155,12 @@ export default function StudyModeSelector({ semesterId, classId, practiceSet }: 
             Start Studying
           </button>
           <button
+            onClick={() => navigate(`/practice/${semesterId}/${classId}/${practiceSet.id}/edit`)}
+            className="text-sm text-gray-500 hover:text-black underline underline-offset-4 transition-colors"
+          >
+            Edit Set
+          </button>
+          <button
             onClick={() => navigate(`/scheduler/${semesterId}`)}
             className="text-sm text-gray-500 hover:text-black underline underline-offset-4 transition-colors"
           >

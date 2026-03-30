@@ -1,4 +1,5 @@
-import { Trash2 } from 'lucide-react';
+import { useRef } from 'react';
+import { Trash2, List } from 'lucide-react';
 import PdfViewerInline from './PdfViewerInline';
 import type { Problem } from '../../types';
 
@@ -10,8 +11,54 @@ interface Props {
 }
 
 export default function ProblemEntry({ problem, index, onChange, onRemove }: Props) {
+  const answerRef = useRef<HTMLTextAreaElement>(null);
+
   const updateField = (field: string, value: unknown) => {
     onChange({ ...problem, [field]: value });
+  };
+
+  const insertBullet = () => {
+    const textarea = answerRef.current;
+    if (!textarea) return;
+    const { selectionStart, selectionEnd, value } = textarea;
+    const atLineStart = selectionStart === 0 || value[selectionStart - 1] === '\n';
+    const insertion = atLineStart ? '• ' : '\n• ';
+    const newValue = value.substring(0, selectionStart) + insertion + value.substring(selectionEnd);
+    updateField('answer', newValue);
+    const newPos = selectionStart + insertion.length;
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.selectionStart = newPos;
+      textarea.selectionEnd = newPos;
+    });
+  };
+
+  const handleAnswerKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key !== 'Enter') return;
+    const textarea = e.currentTarget;
+    const { selectionStart, value } = textarea;
+    const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1;
+    const currentLine = value.substring(lineStart, selectionStart);
+    if (!currentLine.startsWith('• ')) return;
+    e.preventDefault();
+    if (currentLine === '• ') {
+      // Empty bullet — exit bullet mode
+      const newValue = value.substring(0, lineStart) + value.substring(selectionStart);
+      updateField('answer', newValue);
+      requestAnimationFrame(() => {
+        textarea.selectionStart = lineStart;
+        textarea.selectionEnd = lineStart;
+      });
+    } else {
+      // Continue bullets on next line
+      const newValue = value.substring(0, selectionStart) + '\n• ' + value.substring(selectionStart);
+      updateField('answer', newValue);
+      requestAnimationFrame(() => {
+        const newPos = selectionStart + 3;
+        textarea.selectionStart = newPos;
+        textarea.selectionEnd = newPos;
+      });
+    }
   };
 
   return (
@@ -92,12 +139,25 @@ export default function ProblemEntry({ problem, index, onChange, onRemove }: Pro
 
         {problem.type === 'open-ended' && (
           <div>
-            <label className="block text-xs font-medium mb-1">What is the correct answer?</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-medium">What is the correct answer?</label>
+              <button
+                type="button"
+                onClick={insertBullet}
+                className="flex items-center gap-1 text-xs text-gray-500 hover:text-black px-2 py-0.5 rounded hover:bg-gray-100 transition-colors"
+                title="Insert bullet point"
+              >
+                <List size={12} />
+                Bullet
+              </button>
+            </div>
             <textarea
+              ref={answerRef}
               value={problem.answer}
               onChange={(e) => updateField('answer', e.target.value)}
-              rows={2}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black resize-none"
+              onKeyDown={handleAnswerKeyDown}
+              rows={3}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black resize-y"
               placeholder="Enter the answer..."
             />
             <PdfViewerInline

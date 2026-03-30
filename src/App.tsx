@@ -23,6 +23,7 @@ function AppContent() {
             <Route path="/scheduler/:semesterId" element={<SemesterDetail />} />
             <Route path="/practice" element={<ClassSelector />} />
             <Route path="/practice/:semesterId/:classId" element={<ProblemCreator />} />
+            <Route path="/practice/:semesterId/:classId/:setId/edit" element={<ProblemCreator />} />
             <Route path="/practice/:semesterId/:classId/success" element={<SuccessScreen />} />
             <Route path="/study/:semesterId/:classId/:setId" element={<StudyModeSelectPage />} />
             <Route path="/study/:semesterId/:classId/:setId/session" element={<StudySession />} />
